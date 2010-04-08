@@ -1,0 +1,13 @@
+:en:
+  :hi: 'Hello'
+  :test_scope:
+    :hi: 'Hello in Test Scope'
+  :bam:
+    :hi: 'Hello in Bam'
+  :view:
+    :hi: 'Hello in view'
+  :_partial:
+    :hi: 'Hello in partial'
+  :folder:
+    :_partial:
+      :hi: 'Hello in nested partial'
