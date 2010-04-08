@@ -71,7 +71,7 @@ module I18n
         # Then, if we are in a render, we try to get the current scope by scanning the caller stack
         if Thread.current[:last_i18n_auto_scope_render_in_render]
           # Cache the analyse of the caller stack result for performance
-          return (Thread.current[:last_i18n_auto_scope_render] ||= get_scope_of_context)
+          return (Thread.current[:last_i18n_auto_scope_render] ||= get_scope_views_context)
         end
 
         # Finally, if there is no scope before, return the default scope
@@ -80,7 +80,7 @@ module I18n
 
       # Inspired from : http://github.com/yar/simple_loc_compat
       # Return the current view file, only work in app/views folder
-      def get_scope_of_context
+      def get_scope_views_context
         stack_to_analyse = caller
         latest_app_file = caller.detect { |level| level =~ /.*\/app\/views\// }
         return nil unless latest_app_file
@@ -88,6 +88,7 @@ module I18n
         scope = latest_app_file.match(/([^:]+):\d+.*/)[1]
         path = scope.split('/app/views/').last
         scope = File.basename(path, File.extname(path))
+        # If there is a second extension we keep it, in order to work with .erb.html or .erb.iphone, etc...
         scope = "#{File.dirname(path)}/#{scope}" if File.dirname(path) != '.'
 
         scope.gsub!('/', '.')
