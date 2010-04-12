@@ -1,3 +1,7 @@
+0.2.0 (Apr 12, 2010)
+
+* Releasing Gem
+
 0.1.0 (Apr 08, 2010)
 
 * Initial release

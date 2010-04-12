@@ -15,7 +15,7 @@ module I18nAutoScoping
           alias_method :i18n_auto_scoping_backend=, :backend=
         
           def backend=(backend)
-            r = i18n_auto_scoping_backend=(backend)
+            r = send(:i18n_auto_scoping_backend=, backend)
             # When assigning a new backend, we try to extend it :
             extend_backend_for_i18n_auto_scoping
             r
@@ -105,4 +105,18 @@ module I18n
       end
     end
   end
+end
+
+
+if defined? ActionView
+  require 'action_view_extension'
+end
+
+I18n.send :include, I18nAutoScoping::I18nExtension
+I18n.extend_backend_for_i18n_auto_scoping
+
+# Auto namespacing default in controller : controllers/controller_name
+if defined? ActionController
+  ActionController::Base.send :include, I18nAutoScoping::ActionControllerDefaultScope
+  ActionController::Base.send :before_filter, :set_default_i18n_scope
 end
